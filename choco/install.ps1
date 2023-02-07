@@ -1,7 +1,7 @@
 $packageName = "choco"
 $logPath = "$Env:Programfiles\RS_MEM\$packageName-install.log"
 
-Start-Transcript -Path $logPath -Force
+#Start-Transcript -Path $logPath -Force
 
 $chocoPath = "C:\ProgramData\chocolatey\bin\choco.exe"
 
@@ -17,6 +17,6 @@ try {
 }
 catch { exit 1618 }
 
-Stop-Transcript
+#Stop-Transcript
 
 
