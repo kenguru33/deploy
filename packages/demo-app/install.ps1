@@ -1,4 +1,4 @@
-$packageName = "appname"
+$packageName = "demo-app"
 
 $logPath = "c:\RS_MEM\$packageName-install.log"
 Start-Transcript -Path $logPath -Force
@@ -11,5 +11,3 @@ if (Get-Command choco -errorAction SilentlyContinue) {
 }
 
 Stop-Transcript
-
-

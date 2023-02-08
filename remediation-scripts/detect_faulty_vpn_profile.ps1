@@ -1,0 +1,1 @@
+Get-VpnConnection -ErrorAction stop

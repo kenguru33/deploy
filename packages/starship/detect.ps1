@@ -1,4 +1,4 @@
-$packageName = "appname"
+$packageName = "starship"
 
 # Detect Chocolatey packages
 $found = choco list --local-only | Select-String $packageName
