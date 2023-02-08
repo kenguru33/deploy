@@ -1,13 +1,11 @@
 $packageName = "choco"
 
-# set choco path
-$chocoPath = "C:\ProgramData\chocolatey\bin\choco.exe"
-# Add choco to path
-$env:Path += ";$chocoPath"
+# Set Chocolatey path
+$env:Path = "$env:Path;C:\ProgramData\chocolatey\bin"
 
-if (-not(test-path $chocoPath)) {
+if (-not(Get-Command choco -errorAction SilentlyContinue)) {
     exit 1618
 }
 Write-Host "Found $packageName"
-
+exit 0
 

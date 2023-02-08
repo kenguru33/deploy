@@ -1,4 +1,4 @@
-$packageName = "neovim"
+$packageName = "powershell-core"
 
 # Set Chocolatey path
 $env:Path = "$env:Path;C:\ProgramData\chocolatey\bin"
@@ -10,3 +10,6 @@ if ($found) {
     exit 0
 }
 exit 1618
+
+
+

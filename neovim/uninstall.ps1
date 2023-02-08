@@ -1,9 +1,12 @@
 $packageName = "neovim"
 
-# set choco path
-$chocoPath = "C:\ProgramData\chocolatey\bin\choco.exe"
-# Add choco to path
-$env:Path += ";$chocoPath"
+# Set Chocolatey path
+$env:Path = "$env:Path;C:\ProgramData\chocolatey\bin"
 
-# Uninstall Chocolatey packages
+# Start log
+Start-Transcript -Path $logPath -Force
+
+# Uninstall Chocolatey package
 choco uninstall $packageName -y
+
+

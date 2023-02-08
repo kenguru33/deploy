@@ -1,12 +1,6 @@
-$packageName = "neovim"
+$packageName = "appname"
 
-# Set Chocolatey path
-$env:Path = "$env:Path;C:\ProgramData\chocolatey\bin"
-
-# Set log path
 $logPath = "c:\RS_MEM\$packageName-install.log"
-
-# Start log
 Start-Transcript -Path $logPath -Force
 
 if (Get-Command choco -errorAction SilentlyContinue) {
