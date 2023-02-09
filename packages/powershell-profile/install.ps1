@@ -79,7 +79,7 @@ if (-not(Test-Path $PS_profile)) {
   $profile_json_link = "$env:USERPROFILE\Documents\WindowsTerminal\settings.json"
   if (-not(Test-Path $profile_json_link)) {
     New-Item -ItemType File -Path $profile_json_link -Force
-    Copy-Item -Path .\powershell-profile.json -Destination $profile_json_link 
+    Copy-Item -Path .\powershell-profile -Destination $profile_json_link 
   }
 
   New-Item -ItemType SymbolicLink -Path $profile_json -Value $profile_json_link -Force

@@ -1,6 +1,13 @@
-$buildPath = Resolve-Path -Path "$PSScriptRoot/build"
+$rootPath = Resolve-Path -Path "$PSScriptRoot"
 $packagePath = Resolve-Path -Path "$PSScriptRoot/packages"
 $package = $args[0]
+
+# Create build directory if it does not exist
+if (-not (Test-Path -Path $rootPath/build)) {
+    New-Item -ItemType Directory -Path $rootPath/build
+}
+
+$buildPath = Resolve-Path -Path "$PSScriptRoot/build"
 
 # Check if command exist IntuneWinAppUtil.exe exist
 if (-not(Get-Command IntuneWinAppUtil.exe -errorAction SilentlyContinue)) {
