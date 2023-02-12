@@ -1,18 +1,8 @@
 Create New Deployment
 
 ```
-mkdir 7zip
-cp choco-template/install.ps1
-cp choco-template/uninstall.ps1
-choco-template/detect.ps1
-touch New-Item -Path . -Name "7zip" -ItemType "file"
-```
-
-Change packageName variable in all 3 files
-
-Create a MEM package:
-```
-IntuneWinAppUtil.exe -c 7zip -s 7zip -o .
+pkg-create 7zip
+pkg-build 7zip
 ```
 
 Upload the package to intune 32 bit app.
