@@ -1,16 +1,17 @@
-$rootPath = Resolve-Path -Path "$PSScriptRoot/packages"
-$buildPath = Resolve-Path -Path "$PSScriptRoot/build"
+$rootPath = Resolve-Path -Path "$PSScriptRoot"
+
 # Get argument passed to script
 $package = $args[0]
 
 # If direktory exist exit script
-$packagePath = Join-Path -Path $rootPath -ChildPath $package
+$packagePath = Join-Path -Path $rootPath/packages -ChildPath $package
+
 if (Test-Path $packagePath) {
     Write-Warning "Package $package already exist. Skipping package creation."
 }
 else {
 
-    # Create directory for package
+    # Create directory for packages
     if (-not(Test-Path $packagePath)) {
         New-Item -Path $packagePath -ItemType Directory 
     }
@@ -22,39 +23,45 @@ packageName
 
     # Create content for install file
     $installContent = @"
-`$packageName = "$package"
-
-`$logPath = "c:\RS_MEM\`$packageName-install.log"
-Start-Transcript -Path `$logPath -Force
-
-if (Get-Command choco -errorAction SilentlyContinue) {
-    choco install `$packageName -y
-} else {
-    # retry
-    exit 1618
-}
-
-Stop-Transcript
+    `$packageName = "$package"
+    `$source = "winget"
+    `$logPath = "c:\RS_MEM_WINGET\`$packageName-install.log"
+    Start-Transcript -Path `$logPath -Force
+    
+    # Install app with winget
+    try {
+        winget install `$packageName --silent --accept-package-agreements --accept-source-agreements --scope=machine --source `$source
+    } catch {
+        # retry
+        Write-Error "Failed to install `$packageName, retrying..."
+        exit 1618
+    }
+    
+    Stop-Transcript
 "@
 
     # Create content for uninstall file
     $uninstallContent = @"
-`$packageName = "$package"
-
-# Uninstall Chocolatey packages
-choco uninstall `$packageName -y
+    `$packageName = "$package"
+    `$source = "winget"
+    
+    # Uninstall winget packages
+    winget uninstall --silent --source `$source `$packageName
 "@
 
     # Create content for detect file
     $detectContent = @"
-`$packageName = "$package"
-# Detect Chocolatey packages
-`$found = choco list --local-only | Select-String `$packageName
-if (`$found) {
-    Write-Host "Found `$packageName"
-    exit 0
-}
-exit 1618
+    `$packageName = "$package"
+    `$source = "winget"
+    
+    # Detect winget packages
+    
+    `$found = winget list `$packageName --source `$source --accept-source-agreements | Select-String `$packageName
+    if (`$found) {
+        Write-Host "Found `$packageName"
+        exit 0
+    }
+    exit 1618
 "@
 
     # Create setup file in package directory
