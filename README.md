@@ -1,8 +1,8 @@
 Create New Deployment
 
 ```
-pkg-create 7zip
-pkg-build 7zip
+create 7zip
+build 7zip
 ```
 
 Upload the package to intune 32 bit app.
