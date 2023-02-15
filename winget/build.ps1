@@ -1,6 +1,7 @@
 $rootPath = Resolve-Path -Path "$PSScriptRoot"
 $packagePath = Resolve-Path -Path "$PSScriptRoot/packages"
 $package = $args[0]
+$package = $package.ToLower().replace(".", "-")
 
 # Create build directory if it does not exist
 if (-not (Test-Path -Path $rootPath/build)) {
@@ -16,11 +17,10 @@ if (-not(Get-Command IntuneWinAppUtil.exe -errorAction SilentlyContinue)) {
     exit 1
 }
 
-Write-Host $package
 # If arg 1 is * loop thorugh all packages in packages folder
 if ($package -eq "*") {
     $packages = Get-ChildItem -Path $packagePath -Directory -Name
-    Write-Host $packages  
+   
     foreach ($package in $packages) {
         Write-Information "Creating intune package $package in $buildPath "
         IntuneWinAppUtil.exe -c $packagePath/$package -s $package -o $buildPath -q
@@ -30,6 +30,7 @@ else {
     Write-Information "Creating intune package $package in $buildPath "
     IntuneWinAppUtil.exe -c $packagePath\$package -s $package -o $buildPath -q
 }
+
 
 
 
