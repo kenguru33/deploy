@@ -1,8 +1,11 @@
-$packageName = "k9s"
-# Detect Chocolatey packages
-$found = choco list --local-only | Select-String $packageName
-if ($found) {
-    Write-Host "Found $packageName"
-    exit 0
-}
-exit 1618
+    $packageName = "k9s"
+    # Set Chocolatey path
+    $env:Path = "$env:Path;C:\ProgramData\chocolatey\bin"
+    # Check if package is installed
+    $found = choco list --local-only | Select-String $packageName
+    if ($found) {
+        Write-Host "Found $packageName"
+        exit 0
+    }
+    # Package not found, Retry
+    exit 1618    

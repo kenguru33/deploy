@@ -1,13 +1,8 @@
-$packageName = "powertoys"
-
-$logPath = "c:\RS_MEM\$packageName-install.log"
-Start-Transcript -Path $logPath -Force
-
-if (Get-Command choco -errorAction SilentlyContinue) {
-    choco install $packageName -y
-} else {
-    # retry
-    exit 1618
-}
-
-Stop-Transcript
+    $packageName = "powertoys"
+    $logPath = "c:\RS-MEM\$packageName-install.log"
+    Start-Transcript -Path $logPath -Force
+    # Set Chocolatey path
+    $env:Path = "$env:Path;C:\ProgramData\chocolatey\bin"
+    # Install Chocolatey package
+    choco install -y $packageName
+    Stop-Transcript

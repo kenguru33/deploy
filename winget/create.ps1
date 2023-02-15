@@ -21,47 +21,54 @@ else {
 packageName
 "@
 
-    # Create content for install file
-    $installContent = @"
-    `$packageName = "$package"
-    `$source = "winget"
-    `$logPath = "c:\RS_MEM_WINGET\`$packageName-install.log"
-    Start-Transcript -Path `$logPath -Force
-    
-    # Install app with winget
-    try {
-        winget install `$packageName --silent --accept-package-agreements --accept-source-agreements --scope=machine --source `$source
-    } catch {
-        # retry
-        Write-Error "Failed to install `$packageName, retrying..."
-        exit 1618
-    }
-    
-    Stop-Transcript
+# Create content for install file
+$installContent = @"
+`$packageName = "$package"
+`$source = "winget"
+`$logPath = "c:\RS-MEM\`$packageName-install.log"
+Start-Transcript -Path `$logPath -Force
+`$wingetdir = (Resolve-Path "C:\Program Files\WindowsApps\Microsoft.DesktopAppInstaller_*_x64__8wekyb3d8bbwe" | Sort-Object -Property Path | Select-Object -Last 1)
+Set-Location `$wingetdir
+.\winget install `$packageName --silent --accept-package-agreements --accept-source-agreements --scope=machine --source `$source
+Stop-Transcript
 "@
-
     # Create content for uninstall file
     $uninstallContent = @"
-    `$packageName = "$package"
-    `$source = "winget"
-    
-    # Uninstall winget packages
-    winget uninstall --silent --source `$source `$packageName
+`$packageName = "$package"
+`$source = "winget"
+`$logPath = "c:\RS-MEM\`$packageName-install.log"
+Start-Transcript -Path `$logPath -Force
+`$wingetdir = (Resolve-Path "C:\Program Files\WindowsApps\Microsoft.DesktopAppInstaller_*_x64__8wekyb3d8bbwe" | Sort-Object -Property Path | Select-Object -Last 1)
+Set-Location `$wingetdir
+.\winget uninstall `$packageName --silent --accept-package-agreements --accept-source-agreements --scope=machine --source `$source
+Stop-Transcript
 "@
 
-    # Create content for detect file
-    $detectContent = @"
-    `$packageName = "$package"
-    `$source = "winget"
-    
-    # Detect winget packages
-    
-    `$found = winget list `$packageName --source `$source --accept-source-agreements | Select-String `$packageName
-    if (`$found) {
-        Write-Host "Found `$packageName"
+# Create content for detect file
+$detectContent = @"
+`$packageName = "$package"
+`$source = "winget"
+
+`$wingetdir = (Resolve-Path "C:\Program Files\WindowsApps\Microsoft.DesktopAppInstaller_*_x64__8wekyb3d8bbwe" | Sort-Object -Property Path | Select-Object -Last 1)
+Set-Location `$wingetdir
+
+# Detect winget packages
+try {
+    `$wingetPackages = .\winget list --source `$source
+    `$wingetPackages | Select-String `$packageName
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "Package `$packageName is installed"
         exit 0
+    } else {
+        Write-Host "Package `$packageName is not installed"
+        exit 1618
     }
+}
+catch {
+    # retry
+    Write-Error "Failed to detect `$packageName, retrying..."
     exit 1618
+}
 "@
 
     # Create setup file in package directory

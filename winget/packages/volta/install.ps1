@@ -1,15 +1,8 @@
-    $packageName = "volta"
-    $source = "winget"
-    $logPath = "c:\RS_MEM_WINGET\$packageName-install.log"
-    Start-Transcript -Path $logPath -Force
-    
-    # Install app with winget
-    try {
-        winget install $packageName --silent --accept-package-agreements --accept-source-agreements --scope=machine --source $source
-    } catch {
-        # retry
-        Write-Error "Failed to install $packageName, retrying..."
-        exit 1618
-    }
-    
-    Stop-Transcript
+$packageName = "volta"
+$source = "winget"
+$logPath = "c:\RS-MEM\$packageName-install.log"
+Start-Transcript -Path $logPath -Force
+$wingetdir = (Resolve-Path "C:\Program Files\WindowsApps\Microsoft.DesktopAppInstaller_*_x64__8wekyb3d8bbwe" | Sort-Object -Property Path | Select-Object -Last 1)
+Set-Location $wingetdir
+.\winget install $packageName --silent --accept-package-agreements --accept-source-agreements --scope=machine --source $source
+Stop-Transcript

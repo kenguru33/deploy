@@ -1,5 +1,5 @@
 $packageName = "choco"
-$logPath = "c:\RS_MEM\$packageName-install.log"
+$logPath = "c:\RS-MEM\$packageName-install.log"
 
 Start-Transcript -Path $logPath -Force
 

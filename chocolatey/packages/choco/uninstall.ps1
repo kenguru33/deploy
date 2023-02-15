@@ -4,4 +4,4 @@ $packageName = "choco"
 $env:Path = "$env:Path;C:\ProgramData\chocolatey\bin"
 
 # Uninstall Chocolatey packages
-choco uninstall $packageName -y
+choco uninstall -y $packageName

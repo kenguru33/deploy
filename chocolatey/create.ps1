@@ -21,39 +21,41 @@ packageName
 
     # Create content for install file
     $installContent = @"
-`$packageName = "$package"
-
-`$logPath = "c:\RS_MEM\`$packageName-install.log"
-Start-Transcript -Path `$logPath -Force
-
-if (Get-Command choco -errorAction SilentlyContinue) {
-    choco install `$packageName -y
-} else {
-    # retry
-    exit 1618
-}
-
-Stop-Transcript
+    `$packageName = "$package"
+    `$logPath = "c:\RS-MEM\`$packageName-install.log"
+    Start-Transcript -Path `$logPath -Force
+    # Set Chocolatey path
+    `$env:Path = "`$env:Path;C:\ProgramData\chocolatey\bin"
+    # Install Chocolatey package
+    choco install -y `$packageName
+    Stop-Transcript
 "@
 
     # Create content for uninstall file
     $uninstallContent = @"
-`$packageName = "$package"
-
-# Uninstall Chocolatey packages
-choco uninstall `$packageName -y
+    `$packageName = "$package"
+    `$logPath = "c:\RS-MEM\`$packageName-install.log"
+    Start-Transcript -Path `$logPath -Force
+    # Set Chocolatey path
+    `$env:Path = "`$env:Path;C:\ProgramData\chocolatey\bin"
+    # Install Chocolatey package
+    choco uninstall -y `$packageName
+    Stop-Transcript
 "@
 
     # Create content for detect file
     $detectContent = @"
-`$packageName = "$package"
-# Detect Chocolatey packages
-`$found = choco list --local-only | Select-String `$packageName
-if (`$found) {
-    Write-Host "Found `$packageName"
-    exit 0
-}
-exit 1618
+    `$packageName = "$package"
+    # Set Chocolatey path
+    `$env:Path = "`$env:Path;C:\ProgramData\chocolatey\bin"
+    # Check if package is installed
+    `$found = choco list --local-only | Select-String `$packageName
+    if (`$found) {
+        Write-Host "Found `$packageName"
+        exit 0
+    }
+    # Package not found, Retry
+    exit 1618    
 "@
 
     # Create setup file in package directory
