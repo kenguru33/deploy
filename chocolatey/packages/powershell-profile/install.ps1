@@ -83,7 +83,7 @@ if (-not(Test-Path $PS_profile)) {
   }
 
   # This will be moved to ondedrive when user logs into onedrive
-  New-Item -ItemType SymbolicLink -Path $profile_json -Value "$env:USERPROFILE\OneDrive - Redningsselskapet\Documents\WindowsTerminal\settings.json" -Force
+  New-Item -ItemType SymbolicLink -Path $profile_json -Value "$env:USERPROFILE\'OneDrive - Redningsselskapet'\Documents\WindowsTerminal\settings.json" -Force
 
 log "Generated PowerShell profiles"
 
