@@ -76,13 +76,14 @@ if (-not(Test-Path $PS_profile)) {
 
   # Create Symlink to profile.json
   $profile_json = "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
-  $profile_json_link = "$env:OneDrive\Documents\WindowsTerminal\settings.json"
+  $profile_json_link = "$env:USERPROFILE\Documents\WindowsTerminal\settings.json"
   if (-not(Test-Path $profile_json_link)) {
     New-Item -ItemType File -Path $profile_json_link -Force
     Copy-Item -Path .\powershell-profile -Destination $profile_json_link 
   }
 
-  New-Item -ItemType SymbolicLink -Path $profile_json -Value $profile_json_link -Force
+  # This will be moved to ondedrive when user logs into onedrive
+  New-Item -ItemType SymbolicLink -Path $profile_json -Value "$env:Onedrive\Documents\WindowsTerminal\settings.json" -Force
 
 log "Generated PowerShell profiles"
 
