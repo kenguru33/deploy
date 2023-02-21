@@ -1,10 +1,13 @@
-$scriptPath = "c:\RS-MEM\login.ps1"
+$packageName = "rs-login"
+$scriptPath = "c:\login.ps1"
+$logPath = "C:\RS-MEM\$packageName-install.log"
 Start-Transcript -Path $logPath -Force
-# Delete schedule task Redningsselskapet
-$taskName = "Redningsselskapet"
+$taskPath = "\Redningsselskapet\"
+$taskName = "RS Login Script"
+
 $task = Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue
 if ($task) {
-    Unregister-ScheduledTask -TaskName $taskName -Confirm:$false
+    Unregister-ScheduledTask -TaskName $taskName -TaskPath $taskPath -Confirm:$false
     Write-Host "Deleted schedule task $taskName"
 }
 # Delete login.ps1
