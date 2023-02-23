@@ -4,5 +4,5 @@
     # Set Chocolatey path
     $env:Path = "$env:Path;C:\ProgramData\chocolatey\bin"
     # Install Chocolatey package
-    choco install -y $packageName
+    choco install -y $packageName --params /NeovimOnPathForAll
     Stop-Transcript
