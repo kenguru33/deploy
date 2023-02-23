@@ -3,7 +3,7 @@ $rootPath = Resolve-Path -Path "$PSScriptRoot"
 # Get argument passed to script
 $packageId = $args[0]
 
-$found = (winget list $package --exact --accept-source-agreements | Out-String ) -match "$package" 
+$found = (winget list --id $package --exact --accept-source-agreements | Out-String ) -match "$packageId" 
 
 if (-not($found)) {
     Write-Warning "Package $package not found in winget. Skipping package creation."
