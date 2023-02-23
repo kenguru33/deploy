@@ -1,4 +1,4 @@
-$packageId = "Neovim.Neovim"
+$packageId = "neovim.neovim"
 
 $logPath = "c:\RS-MEM\$packageId-install.log"
 Start-Transcript -Path $logPath -Force

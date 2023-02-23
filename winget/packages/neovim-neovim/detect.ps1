@@ -1,4 +1,4 @@
-$packageId = "Neovim.Neovim"
+$packageId = "neovim.neovim"
 
 $wingetdir = (Resolve-Path "C:\Program Files\WindowsApps\Microsoft.DesktopAppInstaller_*_x64__8wekyb3d8bbwe" | Sort-Object -Property Path | Select-Object -Last 1)
 Set-Location $wingetdir
