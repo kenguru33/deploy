@@ -5,8 +5,6 @@ $packageId = $args[0]
 
 $found = (winget list --id $packageId --exact --accept-source-agreements | Out-String ) -match "$packageId" 
 
-Write-Host "Found $found"
-
 if (-not($found)) {
     Write-Warning "Package $package not found in winget. Skipping package creation."
     exit 1

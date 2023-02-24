@@ -2,6 +2,13 @@ $rootPath = Resolve-Path -Path "$PSScriptRoot"
 # Get argument passed to script
 $package = $args[0]
 
+$found = (choco search $package --exact | Out-String ) -match "$package" 
+
+if (-not($found)) {
+    Write-Warning "Package $package not found in winget. Skipping package creation."
+    exit 1
+}
+
 # If direktory exist exit script
 $packagePath = Join-Path -Path $rootPath/packages -ChildPath $package
 if (Test-Path $packagePath) {
