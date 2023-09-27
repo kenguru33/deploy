@@ -1,5 +1,13 @@
 Create New Deployment
 
+Instaall required tools:
+
+```
+sudo choco install intunewinapputil
+```
+
+Example Create a package for 7zip:
+
 ```
 create 7zip
 build 7zip
