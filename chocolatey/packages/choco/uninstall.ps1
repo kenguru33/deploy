@@ -8,7 +8,7 @@ choco uninstall -y $packageName
 
 # Create choco update scheduled task
 $taskPath = "\Redningsselskapet\"
-$taskName = "Choco Update"
+$taskName = "Choco Update test"
 $task = Get-ScheduledTask -TaskName $taskName -TaskPath $taskPath -ErrorAction SilentlyContinue -OutVariable task 
 if (($task)) {
     Write-Host "Scheduled task already exists"

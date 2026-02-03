@@ -3,7 +3,8 @@ $logPath = "c:\RS-MEM\$packageName-install.log"
 
 Start-Transcript -Path $logPath -Force
 
-$chocoPath = "C:\ProgramData\chocolatey\bin\choco.exe"
+$chocoPath = "$env:ProgramData\chocolatey\bin\choco.exe"
+$upgradechoco = '& "$env:ProgramData\chocolatey\bin\choco.exe" upgrade all -y --no-progress --limit-output'
 
 # Install choco if not installed
 try {
@@ -15,7 +16,7 @@ try {
    
     # Create choco update scheduled task
     $taskPath = "\Redningsselskapet\"
-    $taskName = "Choco Update"
+    $taskName = "Choco Update v2"
     $task = Get-ScheduledTask -TaskName $taskName -TaskPath $taskPath -ErrorAction SilentlyContinue -OutVariable task 
     if (($task)) {
         Write-Host "Scheduled task already exists"
@@ -23,9 +24,9 @@ try {
         Write-Host "Deleted schedule task $taskName"
     }
 
-    $action = New-ScheduledTaskAction -Execute "choco" -Argument "upgrade all -y"
-    $trigger = New-ScheduledTaskTrigger -Daily -At "11:30 AM" 
-    $settings = New-ScheduledTaskSettingsSet -RunOnlyIfNetworkAvailable
+    $action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -NonInteractive -WindowStyle Hidden -Command $upgradechoco"
+    $trigger = New-ScheduledTaskTrigger -Daily -At "11:40 AM" 
+    $settings = New-ScheduledTaskSettingsSet -RunOnlyIfNetworkAvailable -Hidden
     $principal = New-ScheduledTaskPrincipal -GroupId "BUILTIN\Brukere" -RunLevel Highest
     
     Register-ScheduledTask -Action $action -Trigger $trigger -TaskPath $taskPath -TaskName $taskName -Description "Updates all chocolatey packages" -Settings $settings -Principal $principal
